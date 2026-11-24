@@ -15,7 +15,23 @@
   const IVAL = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value'), TVAL = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value');
   const valueOf = el => { try { return el instanceof HTMLTextAreaElement ? TVAL.get.call(el) : el instanceof HTMLInputElement ? IVAL.get.call(el) : ''; } catch (e) { return ''; } };
   const own = new WeakSet(), known = new WeakMap(), lastInputOn = new WeakMap();
-  const SESSION = self.crypto && crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); });
+  const uid = () => self.crypto && crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); });
+  const SESSION = uid();
+  const DEV = (() => {
+    const K = '_fc_id', AGE = 7776000, ok = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.[0-9]{9,11}$/;
+    const path = location.pathname.replace(/[^/]*$/, '') || '/', t = Math.floor(Date.now() / 1000);
+    let c = '', s = '', cookieOk = false, storageOk = false;
+    try { const m = document.cookie.match(/(?:^|;\s*)_fc_id=([^;]*)/); if (m && ok.test(m[1])) c = m[1]; } catch (e) {}
+    try { const v = localStorage.getItem(K) || ''; if (ok.test(v)) s = v; } catch (e) {}
+    let val = c || s, source = c && s ? (c === s ? 'both' : 'mismatch') : c ? 'cookie' : s ? 'storage' : 'new';
+    if (val && t - Number(val.split('.')[1]) > AGE) { val = ''; source = 'expired'; }
+    if (!val) val = uid() + '.' + t;
+    const born = Number(val.split('.')[1]);
+    try { document.cookie = `${K}=${val}; max-age=${Math.max(60, AGE - (t - born))}; path=${path}; SameSite=Lax` + (location.protocol === 'https:' ? '; Secure' : ''); cookieOk = document.cookie.indexOf(K + '=' + val) >= 0; } catch (e) {}
+    try { localStorage.setItem(K, val); storageOk = localStorage.getItem(K) === val; } catch (e) {}
+    if (!cookieOk && !storageOk && source === 'new') source = 'blocked';
+    return { id: val.split('.')[0], source, created_at: new Date(born * 1000).toISOString(), cookie_ok: cookieOk, storage_ok: storageOk };
+  })();
   const R = { v: 2, errors: {} };
 
   const NATIVE = /^function (?:get |set )?[\w$]*\(\) \{\s*\[native code\]\s*\}$/;
@@ -360,7 +376,7 @@
       watch_mutations: W.mutations.map((u, idx) => ({ idx, ms: u.ms, kind: u.kind, target: t(u.on || u.into), name: t(u.name), value: t(u.value), tag: t(u.tag), node_id: t(u.id), cls: t(u.cls) })) };
   }
   function build(reason, withEnv, final) {
-    const p = { session_id: SESSION, seq: seq++, reason, page_url: (location.origin + location.pathname + location.search).slice(0, 300),
+    const p = { session_id: SESSION, seq: seq++, reason, page_url: (location.origin + location.pathname + location.search).slice(0, 300), device: DEV,
       meta: { v: 3, ms: Math.round(now()), at: new Date().toISOString(), final: !!final, vis: document.visibilityState, focus: document.hasFocus(), sent: stats.sent, failed: stats.failed, dropped: stats.dropped, retries: stats.retries } };
     if (withEnv) Object.assign(p, envParts());
     return Object.assign(p, behaviorParts(), watchParts());
