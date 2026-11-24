@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#cf1521">
+<title>오늘의 운세 쿠키</title>
+<script src="app.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&amp;display=swap&amp;text=%EC%98%A4%EB%8A%98%EC%9D%98%EC%9A%B4%EC%84%B8%EC%BF%A0%ED%82%A4">
+<link rel="stylesheet" href="fortune.css">
+</head>
+<body id="top">
+<a class="skip" href="#draw">쿠키 선택으로 이동</a>
+<header class="header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top"><img src="fortune-art/bakery-first.webp" width="35" height="28" alt="">오늘의 운세 쿠키</a>
+    <nav aria-label="주요 메뉴">
+      <a href="#draw">쿠키 뽑기</a>
+      <a href="#zodiac">띠별 운세</a>
+      <a href="#guide">이용 안내</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="hero wrap" aria-labelledby="page-title">
+    <h1 id="page-title" aria-label="오늘의 운세 쿠키"><span aria-hidden="true"><b>오</b><b>늘</b><b>의</b></span> <span aria-hidden="true"><b>운</b><b>세</b></span> <span aria-hidden="true"><b>쿠</b><b>키</b></span></h1>
+    <p>쿠키 하나를 쪼개면 오늘의 운세가 나와요!</p>
+    <div class="hero-picture">
+      <span class="spark sparkle-left" aria-hidden="true">✷</span>
+      <span class="spark star-left" aria-hidden="true">✦</span>
+      <img src="fortune-art/bakery-hero.webp" alt="양손으로 황금빛 쿠키를 쪼개자 운세 쪽지가 펼쳐지는 손그림" width="900" height="584" fetchpriority="high">
+      <span class="spark sparkle-right" aria-hidden="true">✷</span>
+      <span class="spark star-right" aria-hidden="true">✦</span>
+    </div>
+  </section>
+
+  <section class="draw" id="draw" aria-labelledby="pick-title" aria-live="off">
+    <div class="draw-head">
+      <h2 id="pick-title">마음이 가는 쿠키를 골라요</h2>
+      <div class="namebox">
+        <label for="name">이름 또는 별명 <small>(선택)</small></label>
+        <input id="name" name="name" maxlength="20" type="text" autocomplete="off" placeholder="예: 홍길동">
+      </div>
+      <div class="off" aria-hidden="true"><input id="name2" name="name2" type="text" tabindex="-1" autocomplete="off"></div>
+    </div>
+    <div class="cookies">
+          <button type="button" class="cookie" data-n="1" data-label="첫 번째" aria-label="첫 번째 쿠키 열기">
+            <span class="cookie-image" aria-hidden="true">
+              <img class="half-left" src="fortune-art/bakery-first.webp" alt="" width="420" height="320">
+              <img class="half-right" src="fortune-art/bakery-first.webp" alt="" width="420" height="320">
+            </span>
+            <strong>첫 번째</strong>
+          </button>
+          <button type="button" class="cookie" data-n="2" data-label="두 번째" aria-label="두 번째 쿠키 열기">
+            <span class="cookie-image" aria-hidden="true">
+              <img class="half-left" src="fortune-art/bakery-second.webp" alt="" width="420" height="320">
+              <img class="half-right" src="fortune-art/bakery-second.webp" alt="" width="420" height="320">
+            </span>
+            <strong>두 번째</strong>
+          </button>
+          <button type="button" class="cookie" data-n="3" data-label="세 번째" aria-label="세 번째 쿠키 열기">
+            <span class="cookie-image" aria-hidden="true">
+              <img class="half-left" src="fortune-art/bakery-third.webp" alt="" width="420" height="320">
+              <img class="half-right" src="fortune-art/bakery-third.webp" alt="" width="420" height="320">
+            </span>
+            <strong>세 번째</strong>
+          </button>
+    </div>
+    <p class="status" id="status" role="status"></p>
+    <article class="result" id="result" aria-labelledby="who" hidden>
+      <h3 tabindex="-1" id="who"></h3>
+      <p id="fortune-text"></p>
+      <dl class="facts">
+        <div><dt>행운의 숫자</dt><dd id="num"></dd></div>
+        <div><dt>행운의 색</dt><dd id="color"></dd></div>
+        <div><dt>행운의 시간</dt><dd id="time"></dd></div>
+      </dl>
+      <div class="actions">
+        <button type="button" id="again">다시 뽑기 <span aria-hidden="true">↻</span></button>
+        <button type="button" id="copy">결과 복사</button>
+      </div>
+    </article>
+    <details class="history" id="history-box" hidden>
+      <summary>지금까지 뽑은 운세 <span id="history-count"></span></summary>
+      <ol id="history"></ol>
+    </details>
+  </section>
+
+  <section class="guide wrap section" id="guide" aria-labelledby="guide-title">
+    <h2 class="ribbon" id="guide-title">이렇게 뽑아요</h2>
+    <ol class="steps">
+        <li>
+          <img src="fortune-art/guide-name.webp" alt="" width="420" height="320">
+          <h3>이름을 적어요</h3>
+          <p>별명도 좋아요. 비워 두고 뽑아도 돼요.</p>
+        </li>
+        <li>
+          <img src="fortune-art/guide-pick.webp" alt="" width="420" height="320">
+          <h3>쿠키를 골라요</h3>
+          <p>세 개 중 마음이 가는 쿠키를 눌러 주세요.</p>
+        </li>
+        <li>
+          <img src="fortune-art/guide-open.webp" alt="" width="420" height="320">
+          <h3>쪽지를 펼쳐요</h3>
+          <p>쿠키가 갈라지면 오늘의 글귀와 행운 정보가 나와요.</p>
+        </li>
+    </ol>
+  </section>
+
+  <section class="zodiac section" id="zodiac" aria-labelledby="zodiac-title">
+    <div class="wrap">
+      <h2 class="ribbon" id="zodiac-title">띠별 오늘의 한마디</h2>
+      <dl class="zodiac-list">
+        <div>
+          <dt>
+            <img src="fortune-art/zodiac/mouse.webp" width="384" height="320" loading="lazy" decoding="async" alt="">
+            쥐띠
+          </dt>
+          <dd>작은 준비가 큰 차이를 만드는 날이에요. 메모를 남겨 두세요.</dd>
+        </div>
+        <div>
+          <dt>
+            <img src="fortune-art/zodiac/ox.webp" width="384" height="320" loading="lazy" decoding="async" alt="">
+            소띠
+          </dt>
+          <dd>서두르지 않아도 괜찮아요. 꾸준함이 오늘의 힘이에요.</dd>
+        </div>
+        <div>
+          <dt>
+            <img src="fortune-art/zodiac/tiger.webp" width="384" height="320" loading="lazy" decoding="async" alt="">
+            호랑이띠
+          </dt>
+          <dd>먼저 말을 건네면 좋은 답이 돌아와요.</dd>
+        </div>
+        <div>
+          <dt>
+            <img src="fortune-art/zodiac/rabbit.webp" width="384" height="320" loading="lazy" decoding="async" alt="">
+            토끼띠
+          </dt>
+          <dd>미뤄 둔 연락을 해 보세요. 반가운 소식이 있을지도 몰라요.</dd>
+        </div>
+        <div>
+          <dt>
+            <img src="fortune-art/zodiac/dragon.webp" width="384" height="320" loading="lazy" decoding="async" alt="">
+            용띠
+          </dt>
+          <dd>새로운 시도를 하기에 좋은 날이에요. 가볍게 시작해 보세요.</dd>
+        </div>
+        <div>
+          <dt>
+            <img src="fortune-art/zodiac/snake.webp" width="384" height="320" loading="lazy" decoding="async" alt="">
+            뱀띠
+          </dt>
+          <dd>꼼꼼하게 다시 확인하면 실수를 피할 수 있어요.</dd>
+        </div>
+        <div>
+          <dt>
+            <img src="fortune-art/zodiac/horse.webp" width="384" height="320" loading="lazy" decoding="async" alt="">
+            말띠
+          </dt>
+          <dd>몸을 움직이면 생각도 풀려요. 잠깐 걸어 보세요.</dd>
+        </div>
+        <div>
+          <dt>
+            <img src="fortune-art/zodiac/sheep.webp" width="384" height="320" loading="lazy" decoding="async" alt="">
+            양띠
+          </dt>
+          <dd>주변의 도움을 받아도 좋은 날이에요. 혼자 끌어안지 마세요.</dd>
+        </div>
+        <div>
+          <dt>
+            <img src="fortune-art/zodiac/monkey.webp" width="384" height="320" loading="lazy" decoding="async" alt="">
+            원숭이띠
+          </dt>
+          <dd>재치 있는 한마디가 분위기를 바꿔요.</dd>
+        </div>
+        <div>
+          <dt>
+            <img src="fortune-art/zodiac/rooster.webp" width="384" height="320" loading="lazy" decoding="async" alt="">
+            닭띠
+          </dt>
+          <dd>일찍 시작한 일이 일찍 끝나요. 오전을 잘 써 보세요.</dd>
+        </div>
+        <div>
+          <dt>
+            <img src="fortune-art/zodiac/dog.webp" width="384" height="320" loading="lazy" decoding="async" alt="">
+            개띠
+          </dt>
+          <dd>약속을 지키는 모습이 믿음을 쌓아요.</dd>
+        </div>
+        <div>
+          <dt>
+            <img src="fortune-art/zodiac/pig.webp" width="384" height="320" loading="lazy" decoding="async" alt="">
+            돼지띠
+          </dt>
+          <dd>맛있는 한 끼가 하루를 든든하게 해 줘요.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="help wrap section" id="help" aria-labelledby="help-title">
+    <h2 class="ribbon" id="help-title">자주 묻는 질문</h2>
+    <div class="questions" aria-live="off">
+        <details><summary>하루에 몇 번 뽑을 수 있나요?</summary><p>횟수 제한은 없어요. 마음에 드는 글귀가 나올 때까지 몇 번이든 뽑아 보세요.</p></details>
+        <details><summary>이름을 꼭 적어야 하나요?</summary><p>아니요. 이름은 결과 제목에만 쓰여요. 비워 두어도 운세는 똑같이 나와요.</p></details>
+        <details><summary>운세는 어떻게 정해지나요?</summary><p>준비된 글귀 가운데 하나가 무작위로 나와요. 행운의 숫자, 색, 시간도 그때그때 새로 정해져요.</p></details>
+        <details><summary>결과를 친구에게 보내고 싶어요.</summary><p>결과 복사 버튼을 누르면 글귀와 행운 정보가 한 번에 복사돼요.</p></details>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap foot-inner">
+    <a class="brand" href="#top"><img src="fortune-art/bakery-first.webp" width="35" height="28" alt="">오늘의 운세 쿠키</a>
+    <div>
+      <p>재미로 보는 오늘의 운세예요.</p>
+      <p>서비스 품질 개선과 보안을 위해 접속 정보를 기록합니다.</p>
+    </div>
+  </div>
+</footer>
+<script>
+(() => {
+  'use strict';
+  const FORTUNES = [
+    '오늘은 작은 친절이 큰 기쁨으로 돌아오는 날이에요.',
+    '망설이던 일을 시작하기에 좋은 때예요. 첫걸음만 떼어 보세요.',
+    '뜻밖의 곳에서 반가운 소식을 듣게 돼요.',
+    '천천히 가도 괜찮아요. 방향이 맞으면 결국 닿아요.',
+    '오늘 만나는 사람이 좋은 기회를 가져다줘요.',
+    '잃어버린 줄 알았던 것을 다시 찾게 돼요.',
+    '웃는 얼굴이 오늘의 가장 큰 무기예요.',
+    '오래 고민하던 문제의 실마리가 보이기 시작해요.',
+    '지금 하는 노력이 생각보다 빨리 열매를 맺어요.',
+    '쉬어 가는 것도 실력이에요. 오늘은 일찍 마무리해 보세요.',
+    '먼저 건넨 인사가 좋은 인연으로 이어져요.',
+    '기대하지 않았던 칭찬을 듣게 되는 날이에요.',
+    '정리와 청소가 좋은 기운을 불러와요.',
+    '오늘의 선택은 내일의 나에게 선물이 돼요.',
+    '사소한 약속을 지키면 큰 믿음이 쌓여요.',
+    '새로운 취미가 일상에 활력을 더해 줘요.',
+    '답이 보이지 않을 때는 잠깐 걷는 것이 답이에요.',
+    '오랜 친구에게 연락해 보세요. 마음이 따뜻해져요.',
+    '오늘 배운 것이 머지않아 쓸모 있게 돼요.',
+    '계획대로 되지 않아도 더 좋은 길이 열려요.',
+    '따뜻한 차 한 잔이 좋은 생각을 데려와요.',
+    '용기 내어 한 질문이 길을 열어 줘요.',
+    '꾸준히 해 온 일이 드디어 빛을 보기 시작해요.',
+    '오늘은 듣는 사람이 되어 보세요. 얻는 것이 많아요.',
+    '작은 저축이 든든한 여유가 돼요.',
+    '마음먹은 일은 오전에 해 두면 순조로워요.',
+    '고마운 마음을 표현하면 두 배로 돌아와요.',
+    '어제보다 한 뼘 자란 나를 발견하게 돼요.',
+    '기다리던 답장이 곧 도착해요.',
+    '오늘 하루의 끝에는 기분 좋은 일이 기다리고 있어요.'
+  ];
+  const COLORS = ['하늘색', '연두색', '노란색', '주황색', '분홍색', '보라색', '흰색', '남색', '초록색', '빨간색'];
+  const TIMES = ['아침 9시', '오전 11시', '점심 무렵', '오후 2시', '오후 4시', '해 질 무렵', '저녁 8시', '잠들기 전'];
+
+  const byId = id => document.getElementById(id);
+  const pick = items => items[Math.floor(Math.random() * items.length)];
+  const cookies = Array.from(document.querySelectorAll('.cookie'));
+  const status = byId('status');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let busy = false;
+  let last = '';
+
+  function reveal(cookie) {
+    const name = byId('name').value.trim();
+    const title = (name ? name + '님의 ' : '') + '오늘의 운세';
+    const fortune = pick(FORTUNES);
+    const num = 1 + Math.floor(Math.random() * 45);
+    const color = pick(COLORS);
+    const time = pick(TIMES);
+    byId('who').textContent = title;
+    byId('fortune-text').textContent = fortune;
+    byId('num').textContent = num;
+    byId('color').textContent = color;
+    byId('time').textContent = time;
+    last = title + ' · ' + fortune + ' (행운의 숫자 ' + num + ', 행운의 색 ' + color + ', 행운의 시간 ' + time + ')';
+    const entry = document.createElement('li');
+    entry.textContent = fortune;
+    byId('history').prepend(entry);
+    byId('history-count').textContent = byId('history').childElementCount;
+    byId('history-box').hidden = false;
+    byId('result').hidden = false;
+    cookie.classList.remove('opening');
+    status.textContent = cookie.dataset.label + ' 쿠키에서 나온 운세예요.';
+    cookies.forEach(item => { item.disabled = false; });
+    busy = false;
+  }
+
+  function draw(cookie) {
+    if (busy) return;
+    busy = true;
+    byId('draw').scrollIntoView({behavior:reducedMotion.matches ? 'instant' : 'smooth', block:'nearest'});
+    cookies.forEach(item => {
+      item.disabled = true;
+      item.classList.toggle('chosen', item === cookie);
+    });
+    cookie.classList.add('opening');
+    byId('result').hidden = true;
+    let count = 3;
+    const tick = () => {
+      status.textContent = cookie.dataset.label + ' 쿠키를 여는 중… ' + count;
+      count -= 1;
+      if (count > 0) window.setTimeout(tick, 650);
+      else window.setTimeout(() => reveal(cookie), 650);
+    };
+    tick();
+  }
+  cookies.forEach(cookie => cookie.addEventListener('click', () => draw(cookie)));
+  byId('again').addEventListener('click', () => draw(pick(cookies)));
+  byId('name').addEventListener('keydown', event => {
+    if (event.key === 'Enter' && !event.isComposing) draw(pick(cookies));
+  });
+  byId('copy').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(last);
+      status.textContent = '결과를 복사했어요.';
+    } catch {
+      status.textContent = '자동 복사를 사용할 수 없어요. 운세 글귀를 직접 선택해 복사해 주세요.';
+    }
+    status.scrollIntoView({block:'nearest'});
+  });
+})();
+</script>
+</body>
+</html>
